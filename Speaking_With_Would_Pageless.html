@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Speaking with WOULD — Your English Buddy</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --teal:       #215D61;
+    --teal-mid:   #2E7D82;
+    --blue:       #3E85C6;
+    --blue-light: #D6E8F7;
+    --header-bg:  #45818E;
+    --green-bg:   #D9EAD3;
+    --green-acc:  #388E3C;
+    --yellow-bg:  #FFF9C4;
+    --yellow-acc: #F39C12;
+    --red-bg:     #FFF0EE;
+    --red-acc:    #C0392B;
+    --orange-bg:  #FFF3E0;
+    --orange-acc: #E67E22;
+    --tip-bg:     #E8F4F5;
+    --tip-acc:    #45818E;
+    --border:     #DEE9EC;
+    --text:       #1A2B2C;
+    --text-muted: #5E7275;
+    --white:      #FFFFFF;
+    --radius:     12px;
+    --radius-sm:  8px;
+    --shadow:     0 2px 12px rgba(33,93,97,.10);
+    --shadow-md:  0 4px 24px rgba(33,93,97,.13);
+
+    /* highlight colors for key structures */
+    --hl-green:  #1E7E34;
+    --hl-red:    #C0392B;
+    --hl-blue:   #1A5F9C;
+    --hl-orange: #C96A00;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #EDF2F3;
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.75;
+    font-size: 18px;
+  }
+
+  /* ── SIDEBAR NAV ───────────────────────────────── */
+  #sidebar {
+    position: fixed; top: 0; left: 0; height: 100vh; width: 240px;
+    background: var(--teal); overflow-y: auto; z-index: 100;
+    padding: 0 0 40px;
+    box-shadow: 2px 0 20px rgba(0,0,0,.18);
+    transition: transform .3s ease;
+  }
+  #sidebar-logo {
+    padding: 24px 20px 18px;
+    border-bottom: 1px solid rgba(255,255,255,.15);
+  }
+  #sidebar-logo span {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem; color: #fff; display: block; line-height: 1.3;
+  }
+  #sidebar-logo small {
+    font-size: .75rem; color: rgba(255,255,255,.6);
+    letter-spacing: .04em; text-transform: uppercase;
+  }
+  #nav-list { list-style: none; padding: 10px 0; }
+  #nav-list li a {
+    display: block; padding: 9px 20px;
+    color: rgba(255,255,255,.78); text-decoration: none;
+    font-size: .95rem; font-weight: 500; transition: all .2s;
+    border-left: 3px solid transparent;
+  }
+  #nav-list li a:hover,
+  #nav-list li a.active {
+    color: #fff; background: rgba(255,255,255,.10);
+    border-left-color: #7ECDD3;
+  }
+  #nav-list li.nav-section {
+    padding: 14px 20px 4px;
+    font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: rgba(255,255,255,.4);
+  }
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.25); border-radius: 4px; }
+
+  /* ── MAIN WRAPPER ──────────────────────────────── */
+  #main {
+    margin-left: 240px;
+    padding: 44px 48px 80px;
+    max-width: 960px;       /* tighter = less dead space on right */
+  }
+
+  /* ── HERO ──────────────────────────────────────── */
+  #hero {
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-mid) 55%, #3E85C6 100%);
+    border-radius: var(--radius);
+    padding: 52px 48px;
+    margin-bottom: 36px;
+    box-shadow: var(--shadow-md);
+    position: relative; overflow: hidden;
+  }
+  #hero::before {
+    content: "💬";
+    position: absolute; right: 36px; top: 28px;
+    font-size: 5.5rem; opacity: .13; pointer-events: none;
+  }
+  #hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3rem; color: #fff; line-height: 1.15; margin-bottom: 10px;
+  }
+  #hero p { color: rgba(255,255,255,.82); font-size: 1.1rem; margin-bottom: 4px; }
+  #hero .tags { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
+  #hero .tag {
+    background: rgba(255,255,255,.18); color: #fff;
+    padding: 4px 14px; border-radius: 999px; font-size: .82rem; font-weight: 500;
+  }
+
+  /* ── SECTION CARDS ─────────────────────────────── */
+  .section-card {
+    background: var(--white); border-radius: var(--radius);
+    box-shadow: var(--shadow); margin-bottom: 28px; overflow: hidden;
+  }
+  .section-header {
+    background: var(--teal); padding: 18px 28px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-header .sec-emoji { font-size: 1.35rem; }
+  .section-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.55rem; color: #fff; font-weight: 400;
+  }
+  .section-header .sec-num {
+    font-size: .7rem; color: rgba(255,255,255,.5);
+    letter-spacing: .08em; text-transform: uppercase; margin-left: auto;
+  }
+
+  /* ── TWO-COLUMN BODY: content + inline tips ─────── */
+  .section-body {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 0;
+  }
+  .body-main  { padding: 28px 28px 28px 28px; }
+  .body-aside {
+    padding: 28px 20px 28px 0;
+    display: flex; flex-direction: column; gap: 16px;
+    border-left: 1px solid var(--border);
+    background: #FAFCFC;
+  }
+
+  /* sections that don't need an aside: full width */
+  .section-body.full { display: block; }
+  .section-body.full .body-main { padding: 28px; }
+
+  /* ── SUBSECTION ─────────────────────────────────── */
+  .subsec { margin-bottom: 26px; }
+  .subsec:last-child { margin-bottom: 0; }
+  .subsec h3 {
+    color: var(--blue); font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 10px; padding-bottom: 5px;
+    border-bottom: 2px solid var(--blue-light);
+  }
+
+  /* ── TYPOGRAPHY ─────────────────────────────────── */
+  p  { margin-bottom: 10px; font-size: 1rem; }
+  ul { padding-left: 22px; margin-bottom: 10px; }
+  ul li { margin-bottom: 6px; font-size: 1rem; }
+  ul li::marker { color: var(--teal-mid); }
+  ol { padding-left: 22px; }
+  ol li { margin-bottom: 8px; font-size: 1rem; }
+
+  /* ── KEY STRUCTURE HIGHLIGHT ────────────────────── */
+  /* Big formula pill inside content */
+  .formula {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 6px; margin: 14px 0 8px;
+  }
+  .formula .fpart {
+    padding: 6px 14px; border-radius: 6px;
+    font-size: 1rem; font-weight: 700; letter-spacing: .01em;
+  }
+  .fpart.fp-subj  { background: #E3F2FD; color: #1565C0; }
+  .fpart.fp-would { background: #215D61; color: #fff; }
+  .fpart.fp-verb  { background: #E8F5E9; color: #1B5E20; }
+  .fpart.fp-to    { background: #FFF3E0; color: #E65100; font-style: italic; }
+  .fpart.fp-than  { background: #F3E5F5; color: #6A1B9A; font-style: italic; }
+  .fpart.fp-noun  { background: #FCE4EC; color: #880E4F; }
+  .fpart.fp-ing   { background: #FFF8E1; color: #F57F17; }
+  .fpart.fp-if    { background: #215D61; color: #fff; }
+  .fpart.fp-past  { background: #FFEBEE; color: #B71C1C; }
+  .fpart.fp-plus  { background: none; color: #888; font-size: 1.1rem; font-weight: 400; padding: 0 2px; }
+  .fpart.fp-comma { background: none; color: #888; font-size: 1.2rem; font-weight: 400; padding: 0; }
+
+  /* inline code-like highlight */
+  .hl  { font-weight: 700; padding: 1px 6px; border-radius: 4px; }
+  .hl-g { background: #D9EAD3; color: #1B5E20; }   /* green  = correct */
+  .hl-r { background: #FDECEA; color: #C0392B; }   /* red    = wrong   */
+  .hl-b { background: #D6E8F7; color: #1A5F9C; }   /* blue   = key word */
+  .hl-o { background: #FFF3E0; color: #C96A00; }   /* orange = watch out */
+  .hl-p { background: #F3E5F5; color: #6A1B9A; }   /* purple = pattern */
+
+  /* ── TABLES ─────────────────────────────────────── */
+  .tbl-wrap { overflow-x: auto; margin: 12px 0; border-radius: var(--radius-sm); box-shadow: 0 1px 6px rgba(0,0,0,.07); }
+  table { width: 100%; border-collapse: collapse; font-size: .97rem; }
+  thead tr { background: var(--header-bg); }
+  thead th { color: #fff; font-weight: 600; padding: 11px 14px; text-align: left; font-size: .9rem; }
+  tbody tr:nth-child(odd)  { background: var(--white); }
+  tbody tr:nth-child(even) { background: #F0F8FF; }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid #E8EEF0; vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* ── CALLOUT BOXES ──────────────────────────────── */
+  .box {
+    border-radius: var(--radius-sm); padding: 16px 18px;
+    margin: 12px 0; font-size: .97rem; line-height: 1.7;
+  }
+  .box-label {
+    font-weight: 700; font-size: .82rem; letter-spacing: .05em;
+    text-transform: uppercase; margin-bottom: 8px; display: block;
+  }
+  .box-tip    { background: var(--tip-bg);    border-left: 4px solid var(--tip-acc);    }
+  .box-tip    .box-label { color: var(--tip-acc); }
+  .box-green  { background: var(--green-bg);  border-left: 4px solid var(--green-acc);  }
+  .box-green  .box-label { color: var(--green-acc); }
+  .box-red    { background: var(--red-bg);    border-left: 4px solid var(--red-acc);    }
+  .box-red    .box-label { color: var(--red-acc); }
+  .box-yellow { background: var(--yellow-bg); border-left: 4px solid var(--yellow-acc); }
+  .box-yellow .box-label { color: var(--yellow-acc); }
+  .box-orange { background: var(--orange-bg); border-left: 4px solid var(--orange-acc); }
+  .box-orange .box-label { color: var(--orange-acc); }
+  .box-blue   { background: var(--blue-light);border-left: 4px solid var(--blue);       }
+  .box-blue   .box-label { color: var(--blue); }
+
+  /* ── ASIDE TIP CARDS (right column) ─────────────── */
+  .aside-tip {
+    margin: 0 16px 0 0;
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-size: .9rem; line-height: 1.6;
+  }
+  .aside-tip .aside-label {
+    font-weight: 800; font-size: .75rem; letter-spacing: .07em;
+    text-transform: uppercase; margin-bottom: 8px; display: block;
+  }
+  .aside-tip p { font-size: .9rem; margin-bottom: 6px; }
+  .aside-tip p:last-child { margin-bottom: 0; }
+  .at-tip    { background: var(--tip-bg);    border: 1px solid #B2D8DC; }
+  .at-tip    .aside-label { color: var(--tip-acc); }
+  .at-warn   { background: var(--orange-bg); border: 1px solid #F5C99B; }
+  .at-warn   .aside-label { color: var(--orange-acc); }
+  .at-green  { background: var(--green-bg);  border: 1px solid #A8D4A2; }
+  .at-green  .aside-label { color: var(--green-acc); }
+  .at-red    { background: var(--red-bg);    border: 1px solid #F5C6C1; }
+  .at-red    .aside-label { color: var(--red-acc); }
+
+  /* ── WARM-UP BLOCK ──────────────────────────────── */
+  .warmup {
+    background: linear-gradient(135deg, #EEF7F8 0%, #E3EFF7 100%);
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 18px 22px; margin-bottom: 22px;
+  }
+  .warmup-title {
+    font-size: .82rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: .09em; color: var(--teal); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .warmup ol li { margin-bottom: 10px; font-size: 1rem; color: var(--text); }
+
+  /* ── COMPARE GRID ───────────────────────────────── */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+  .compare-wrong {
+    background: var(--red-bg); border: 1px solid #F5C6C1;
+    border-radius: var(--radius-sm); padding: 12px 14px;
+  }
+  .compare-right {
+    background: var(--green-bg); border: 1px solid #B7D9B0;
+    border-radius: var(--radius-sm); padding: 12px 14px;
+  }
+  .compare-label {
+    font-weight: 700; font-size: .76rem; text-transform: uppercase;
+    letter-spacing: .05em; margin-bottom: 6px;
+  }
+  .compare-wrong .compare-label { color: var(--red-acc); }
+  .compare-right .compare-label { color: var(--green-acc); }
+  .compare-wrong p, .compare-right p { font-size: .97rem; margin: 4px 0; }
+
+  /* ── SPEAKING GROUPS ────────────────────────────── */
+  .speaking-group { margin-bottom: 22px; }
+  .speaking-group h4 {
+    font-size: .85rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: .07em; color: var(--teal); margin-bottom: 10px;
+    padding-bottom: 4px; border-bottom: 1px dashed var(--border);
+  }
+  .speaking-group ol li { margin-bottom: 10px; font-size: 1rem; }
+
+  /* ── NUMBERED LISTS (exercises) ─────────────────── */
+  .error-list { counter-reset: err; list-style: none; padding: 0; }
+  .error-list li {
+    counter-increment: err;
+    padding: 11px 12px 11px 44px; position: relative;
+    border-bottom: 1px solid var(--border); font-size: .98rem;
+  }
+  .error-list li::before {
+    content: counter(err);
+    position: absolute; left: 10px; top: 11px;
+    background: var(--teal); color: #fff;
+    width: 22px; height: 22px; border-radius: 50%;
+    font-size: .72rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .error-list li:last-child { border-bottom: none; }
+
+  .ans-list { counter-reset: ans; list-style: none; padding: 0; }
+  .ans-list li {
+    counter-increment: ans;
+    padding: 11px 12px 11px 44px; position: relative;
+    border-bottom: 1px solid var(--border); font-size: .98rem;
+  }
+  .ans-list li::before {
+    content: counter(ans);
+    position: absolute; left: 10px; top: 11px;
+    background: var(--green-acc); color: #fff;
+    width: 22px; height: 22px; border-radius: 50%;
+    font-size: .72rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ans-list li:last-child { border-bottom: none; }
+
+  /* ── HOMEWORK ────────────────────────────────────── */
+  #homework .section-header { background: linear-gradient(90deg, #3E85C6, #215D61); }
+
+  /* ── FOOTER ─────────────────────────────────────── */
+  #footer { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 1rem; }
+  #footer strong { color: var(--teal); }
+
+  /* ── MOBILE ─────────────────────────────────────── */
+  #menu-btn {
+    display: none; position: fixed; top: 14px; left: 14px; z-index: 200;
+    background: var(--teal); color: #fff; border: none; border-radius: 8px;
+    padding: 9px 13px; cursor: pointer; font-size: 1.1rem;
+  }
+  @media (max-width: 900px) {
+    #menu-btn { display: block; }
+    #sidebar { transform: translateX(-100%); }
+    #sidebar.open { transform: translateX(0); }
+    #main { margin-left: 0; padding: 22px 18px 60px; }
+    .section-body { display: block; }
+    .body-aside { border-left: none; border-top: 1px solid var(--border); padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<button id="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+
+<!-- ═══ SIDEBAR ══════════════════════════════════════════════════════════════ -->
+<nav id="sidebar">
+  <div id="sidebar-logo">
+    <span>Your English Buddy 🎓</span>
+    <small>Basic–Intermediate</small>
+  </div>
+  <ul id="nav-list">
+    <li class="nav-section">Overview</li>
+    <li><a href="#goals">🎯 Lesson Goals</a></li>
+    <li><a href="#meaning">💡 Meaning Guide</a></li>
+    <li><a href="#contractions">✂️ Contractions</a></li>
+    <li><a href="#core-rule">📌 Core Rule</a></li>
+    <li class="nav-section">Grammar</li>
+    <li><a href="#would">WOULD</a></li>
+    <li><a href="#would-like">WOULD LIKE</a></li>
+    <li><a href="#would-rather">WOULD RATHER</a></li>
+    <li><a href="#prefer">PREFER</a></li>
+    <li><a href="#second-cond">Second Conditional</a></li>
+    <li class="nav-section">Review</li>
+    <li><a href="#summary">📋 Pattern Summary</a></li>
+    <li><a href="#mistakes">🚫 Common Mistakes</a></li>
+    <li><a href="#speaking">🗣️ Speaking Practice</a></li>
+    <li><a href="#errors">✏️ Error Practice</a></li>
+    <li><a href="#better">💪 Answer Better</a></li>
+    <li class="nav-section">Take Home</li>
+    <li><a href="#homework">📚 Homework</a></li>
+    <li><a href="#answer-key">✔️ Answer Key</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ MAIN ══════════════════════════════════════════════════════════════════ -->
+<main id="main">
+
+  <!-- HERO -->
+  <div id="hero">
+    <h1>Speaking with WOULD 💬</h1>
+    <p>Would &nbsp;·&nbsp; Would Like &nbsp;·&nbsp; Would Rather &nbsp;·&nbsp; Prefer &nbsp;·&nbsp; Second Conditional</p>
+    <p style="color:rgba(255,255,255,.6);font-size:.85rem;">Your English Buddy &nbsp;|&nbsp; Basic–Intermediate Level</p>
+    <div class="tags">
+      <span class="tag">Preferences</span>
+      <span class="tag">Polite Requests</span>
+      <span class="tag">Comparisons</span>
+      <span class="tag">Hypotheticals</span>
+      <span class="tag">Real Speaking</span>
+    </div>
+  </div>
+
+  <!-- ─── 1. LESSON GOALS ─────────────────────────────────────────────────── -->
+  <div class="section-card" id="goals">
+    <div class="section-header"><span class="sec-emoji">🎯</span><h2>Lesson Goals</h2><span class="sec-num">Section 1</span></div>
+    <div class="section-body full"><div class="body-main">
+      <ul>
+        <li>Talk about preferences — what you like, want, or choose</li>
+        <li>Speak politely when asking for things</li>
+        <li>Compare two choices and say which one you prefer</li>
+        <li>Talk about imaginary situations ("what if…")</li>
+        <li>Answer personal questions in real English</li>
+        <li>Use <strong>would, would like, would rather, prefer,</strong> and the <strong>second conditional</strong></li>
+      </ul>
+    </div></div>
+  </div>
+
+  <!-- ─── 2. QUICK MEANING ──────────────────────────────────────────────────── -->
+  <div class="section-card" id="meaning">
+    <div class="section-header"><span class="sec-emoji">💡</span><h2>Quick Meaning Guide</h2><span class="sec-num">Section 2</span></div>
+    <div class="section-body full"><div class="body-main">
+      <p>Before we start — here's what each expression means. We'll study each one in detail soon.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Expression</th><th>Meaning</th><th>Quick Example</th></tr></thead>
+          <tbody>
+            <tr><td><strong>I would…</strong></td><td>Something I'd do (hypothetical)</td><td>I would help.</td></tr>
+            <tr><td><strong>I would like…</strong></td><td>A polite want or wish</td><td>I would like to rest.</td></tr>
+            <tr><td><strong>I would rather…</strong></td><td>I prefer this over that</td><td>I'd rather stay home.</td></tr>
+            <tr><td><strong>I wouldn't…</strong></td><td>I would NOT do it</td><td>I wouldn't go alone.</td></tr>
+            <tr><td><strong>Would you like…?</strong></td><td>A polite offer or invitation</td><td>Would you like some water?</td></tr>
+            <tr><td><strong>Would you rather…?</strong></td><td>Asking someone to choose</td><td>Would you rather work or rest?</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ─── 3. CONTRACTIONS ───────────────────────────────────────────────────── -->
+  <div class="section-card" id="contractions">
+    <div class="section-header"><span class="sec-emoji">✂️</span><h2>Contractions — Short Forms</h2><span class="sec-num">Section 3</span></div>
+    <div class="section-body">
+      <div class="body-main">
+        <p>In speaking and informal writing, we use short forms. They sound natural and friendly.</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Full Form</th><th>Short Form</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td>I would</td><td><strong>I'd</strong></td><td>I'd go with you.</td></tr>
+              <tr><td>You would</td><td><strong>You'd</strong></td><td>You'd like it.</td></tr>
+              <tr><td>He would</td><td><strong>He'd</strong></td><td>He'd help if you asked.</td></tr>
+              <tr><td>She would</td><td><strong>She'd</strong></td><td>She'd rather stay home.</td></tr>
+              <tr><td>We would</td><td><strong>We'd</strong></td><td>We'd like to leave early.</td></tr>
+              <tr><td>They would</td><td><strong>They'd</strong></td><td>They'd rather eat later.</td></tr>
+              <tr><td>Would not</td><td><strong>Wouldn't</strong></td><td>I wouldn't do that.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="body-aside">
+        <div class="aside-tip at-tip">
+          <span class="aside-label">🔊 Pronunciation</span>
+          <p><strong>I'd</strong> = sounds like "aid"</p>
+          <p><strong>He'd</strong> = "heed"</p>
+          <p><strong>She'd</strong> = "sheed"</p>
+          <p><strong>Wouldn't</strong> = "WUD-ent"<br><em>The T is almost silent in fast speech</em></p>
+        </div>
+        <div class="aside-tip at-warn">
+          <span class="aside-label">⚠️ Remember</span>
+          <p><strong>'d</strong> always means <strong>would</strong> in this lesson — never forget it!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 4. CORE RULE ──────────────────────────────────────────────────────── -->
+  <div class="section-card" id="core-rule">
+    <div class="section-header"><span class="sec-emoji">📌</span><h2>Core Rule: What Comes After WOULD?</h2><span class="sec-num">Section 4</span></div>
+    <div class="section-body">
+      <div class="body-main">
+        <p>This rule applies to <strong>every use of would</strong> in this lesson:</p>
+        <div class="formula">
+          <span class="fpart fp-would">WOULD</span>
+          <span class="fpart fp-plus">+</span>
+          <span class="fpart fp-verb">BASE VERB</span>
+        </div>
+        <p style="margin-top:4px;font-size:.93rem;color:var(--text-muted);">The base verb = the simple dictionary form. No changes.</p>
+        <div class="compare-grid" style="margin-top:14px;">
+          <div class="compare-right">
+            <div class="compare-label">✅ Correct</div>
+            <p>I would <span class="hl hl-g">go</span>.</p>
+            <p>She would <span class="hl hl-g">help</span>.</p>
+            <p>They would <span class="hl hl-g">work</span>.</p>
+          </div>
+          <div class="compare-wrong">
+            <div class="compare-label">❌ Wrong</div>
+            <p>I would <span class="hl hl-r">to go</span>.</p>
+            <p>She would <span class="hl hl-r">helping</span>.</p>
+            <p>They would <span class="hl hl-r">worked</span>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="body-aside">
+        <div class="aside-tip at-tip">
+          <span class="aside-label">💡 Think of it this way</span>
+          <p>"Would" already does the work. The next verb just sits there — simple and unchanged.</p>
+        </div>
+        <div class="aside-tip at-red">
+          <span class="aside-label">🚫 Never add</span>
+          <p><span class="hl hl-r">to</span> → I would <em>to go</em> ❌</p>
+          <p><span class="hl hl-r">-ing</span> → I would <em>going</em> ❌</p>
+          <p><span class="hl hl-r">-ed</span> → I would <em>worked</em> ❌</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 5. WOULD ──────────────────────────────────────────────────────────── -->
+  <div class="section-card" id="would">
+    <div class="section-header"><span class="sec-emoji">🗣️</span><h2>WOULD</h2><span class="sec-num">Section 5</span></div>
+    <div class="section-body">
+      <div class="body-main">
+
+        <!-- WARM-UP: simple would questions only, no second conditional -->
+        <div class="warmup">
+          <div class="warmup-title">🎙️ Speaking Warm-Up — Answer Out Loud!</div>
+          <ol>
+            <li>Would you like to be rich? Why?</li>
+            <li>Would you like to have a better job? What kind?</li>
+            <li>Would you like to speak perfect English? Why?</li>
+            <li>Would you like to live in a different city?</li>
+            <li>Would you like to have more free time?</li>
+          </ol>
+        </div>
+
+        <div class="subsec">
+          <h3>What Does WOULD Mean?</h3>
+          <p>We use <strong>would</strong> to talk about things we <em>imagine</em>, <em>wish for</em>, or <em>want to do</em> — but they are not happening right now. It also makes questions and offers sound polite.</p>
+        </div>
+
+        <div class="subsec">
+          <h3>Structure</h3>
+          <div class="formula">
+            <span class="fpart fp-subj">Subject</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-would">WOULD / WOULDN'T</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-verb">BASE VERB</span>
+          </div>
+          <div class="tbl-wrap" style="margin-top:14px;">
+            <table>
+              <thead><tr><th>Type</th><th>Example</th></tr></thead>
+              <tbody>
+                <tr><td>Affirmative (+)</td><td>I <strong>would love</strong> to travel more.</td></tr>
+                <tr><td>Negative (−)</td><td>I <strong>wouldn't eat</strong> that. It looks bad.</td></tr>
+                <tr><td>Question (?)</td><td><strong>Would</strong> you <strong>like</strong> some help?</td></tr>
+                <tr><td>Short answer</td><td>Yes, I would. &nbsp;/&nbsp; No, I wouldn't.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="subsec">
+          <h3>Everyday Examples</h3>
+          <ul>
+            <li>I <strong>would love</strong> a day off.</li>
+            <li>She <strong>would like</strong> a cold drink.</li>
+            <li>We <strong>would prefer</strong> an earlier shift.</li>
+            <li>He <strong>wouldn't eat</strong> spicy food.</li>
+            <li>They <strong>would enjoy</strong> a longer break.</li>
+          </ul>
+        </div>
+
+        <div class="subsec">
+          <h3>Work Examples</h3>
+          <ul>
+            <li>I <strong>would ask</strong> my supervisor, but he's not here.</li>
+            <li>She <strong>would help</strong> with the boxes — she's very strong.</li>
+            <li>We <strong>wouldn't lift</strong> that alone. It's too heavy.</li>
+            <li>Would you <strong>carry</strong> this to aisle 3, please?</li>
+          </ul>
+        </div>
+
+        <div class="subsec">
+          <h3>Polite Questions &amp; Offers</h3>
+          <p>Would is very useful for polite requests:</p>
+          <ul>
+            <li><strong>Would you like</strong> some water?</li>
+            <li><strong>Would you help</strong> me with this, please?</li>
+            <li><strong>Would you like to</strong> take a break?</li>
+            <li>I <strong>would like</strong> to speak with a nurse.</li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="body-aside">
+        <div class="aside-tip at-tip">
+          <span class="aside-label">💡 Key Point</span>
+          <p>WOULD describes something imagined, wished for, or offered — not a real action happening right now.</p>
+        </div>
+        <div class="aside-tip at-green">
+          <span class="aside-label">✅ Good Answers</span>
+          <p>"Yes, I would. I'd love to be rich!"</p>
+          <p>"No, I wouldn't. I prefer my life here."</p>
+          <p>Always answer with <strong>would</strong> or <strong>wouldn't</strong>.</p>
+        </div>
+        <div class="aside-tip at-warn">
+          <span class="aside-label">⚠️ Watch Out</span>
+          <p>After WOULD, the verb does <strong>not</strong> change.</p>
+          <p>✅ I would <strong>love</strong><br>❌ I would <strong>loves</strong><br>❌ I would <strong>loved</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 6. WOULD vs WOULD LIKE ───────────────────────────────────────────── -->
+  <div class="section-card" id="would-like">
+    <div class="section-header"><span class="sec-emoji">🔄</span><h2>WOULD vs. WOULD LIKE</h2><span class="sec-num">Section 6</span></div>
+    <div class="section-body">
+      <div class="body-main">
+        <div class="warmup">
+          <div class="warmup-title">🎙️ Speaking Warm-Up — Answer Out Loud!</div>
+          <ol>
+            <li>What would you like to eat after class today?</li>
+            <li>Would you like to have an easier work schedule?</li>
+            <li>What would you like to learn in English this year?</li>
+            <li>Would you like to sit down and rest right now?</li>
+            <li>Would you like to see a doctor if you had stomach pain?</li>
+          </ol>
+        </div>
+
+        <div class="subsec">
+          <h3>The Two Patterns Side by Side</h3>
+          <div class="formula">
+            <span class="fpart fp-would">WOULD</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-verb">BASE VERB</span>
+          </div>
+          <div class="formula" style="margin-top:6px;">
+            <span class="fpart fp-would">WOULD LIKE</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-to">TO</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-verb">BASE VERB</span>
+          </div>
+
+          <div class="tbl-wrap" style="margin-top:14px;">
+            <table>
+              <thead><tr><th>WOULD + base verb</th><th>WOULD LIKE + to + base verb</th></tr></thead>
+              <tbody>
+                <tr><td>I would study more.</td><td>I would like <strong>to</strong> study more.</td></tr>
+                <tr><td>I would go home early.</td><td>I would like <strong>to</strong> go home early.</td></tr>
+                <tr><td>She would help us.</td><td>She would like <strong>to</strong> help us.</td></tr>
+                <tr><td>They would leave now.</td><td>They would like <strong>to</strong> leave now.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin-top:10px;font-size:.93rem;font-style:italic;color:var(--text-muted);">Both are correct — WOULD LIKE sounds softer and more polite.</p>
+        </div>
+
+        <div class="subsec">
+          <h3>Correct vs. Incorrect</h3>
+          <div class="compare-grid">
+            <div class="compare-right">
+              <div class="compare-label">✅ Correct</div>
+              <p>I <strong>would</strong> study. <em>(no TO)</em></p>
+              <p>I <strong>would like to</strong> study. <em>(TO needed)</em></p>
+              <p>Would you like <strong>to</strong> sit?</p>
+            </div>
+            <div class="compare-wrong">
+              <div class="compare-label">❌ Wrong</div>
+              <p>I would <span class="hl hl-r">to</span> study.</p>
+              <p>I would like <span class="hl hl-r">study</span>. <em>(missing TO)</em></p>
+              <p>Would you like <span class="hl hl-r">sitting</span>?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsec">
+          <h3>Real-Life Examples</h3>
+          <ul>
+            <li>I would like <strong>to</strong> take a break. I'm very tired.</li>
+            <li>She would like <strong>to</strong> move to a day shift.</li>
+            <li>Would you like some water? You look thirsty.</li>
+            <li>I would like <strong>to</strong> speak to the nurse. I have a stomachache.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="body-aside">
+        <div class="aside-tip at-tip">
+          <span class="aside-label">💡 The Big Difference</span>
+          <p><strong>WOULD</strong> + base verb<br>→ I would <em>help</em>.</p>
+          <p><strong>WOULD LIKE</strong> + <span class="hl hl-o">TO</span> + base verb<br>→ I would like <em>to help</em>.</p>
+        </div>
+        <div class="aside-tip at-red">
+          <span class="aside-label">🚫 Common Error</span>
+          <p>Students forget the <span class="hl hl-r">TO</span> after WOULD LIKE.</p>
+          <p>❌ I would like <em>eat</em>.<br>✅ I would like <strong>to eat</strong>.</p>
+        </div>
+        <div class="aside-tip at-green">
+          <span class="aside-label">☕ Polite Tip</span>
+          <p>"Would you like…?" is much more polite than "Do you want…?"</p>
+          <p>Use it to offer things to people!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 7. WOULD RATHER ───────────────────────────────────────────────────── -->
+  <div class="section-card" id="would-rather">
+    <div class="section-header"><span class="sec-emoji">🔀</span><h2>WOULD RATHER</h2><span class="sec-num">Section 7</span></div>
+    <div class="section-body">
+      <div class="body-main">
+        <div class="warmup">
+          <div class="warmup-title">🎙️ Speaking Warm-Up — Answer Out Loud!</div>
+          <ol>
+            <li>Would you rather work in the morning or at night?</li>
+            <li>Would you rather drink coffee or tea right now?</li>
+            <li>Would you rather stay home or go out after work today?</li>
+            <li>Would you rather rest or go for a walk if you felt tired?</li>
+            <li>Would you rather have a short break or a long lunch at work?</li>
+          </ol>
+        </div>
+
+        <div class="subsec">
+          <h3>Pattern 1 — Simple Choice</h3>
+          <div class="formula">
+            <span class="fpart fp-subj">Subject</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-would">WOULD RATHER</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-verb">BASE VERB</span>
+          </div>
+          <ul style="margin-top:12px;">
+            <li>I would rather <strong>stay</strong> home.</li>
+            <li>She would rather <strong>drink</strong> coffee.</li>
+            <li>He would rather <strong>work</strong> the day shift.</li>
+          </ul>
+        </div>
+
+        <div class="subsec">
+          <h3>Pattern 2 — Comparing with THAN</h3>
+          <div class="formula">
+            <span class="fpart fp-would">WOULD RATHER</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-verb">BASE VERB</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-than">than</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-verb">BASE VERB</span>
+          </div>
+          <ul style="margin-top:12px;">
+            <li>I'd rather <strong>speak</strong> English than Spanish.</li>
+            <li>She'd rather <strong>drink</strong> coffee than tea.</li>
+            <li>They'd rather <strong>stay</strong> home than go out.</li>
+          </ul>
+        </div>
+
+        <div class="subsec">
+          <h3>Pattern 3 — Questions with OR</h3>
+          <div class="formula">
+            <span class="fpart fp-would">WOULD</span>
+            <span class="fpart fp-subj">you</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-would">RATHER</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-verb">BASE VERB</span>
+            <span class="fpart fp-than">or</span>
+            <span class="fpart fp-verb">BASE VERB</span>
+            <span class="fpart fp-plus">?</span>
+          </div>
+          <ul style="margin-top:12px;">
+            <li>Would you rather <strong>go</strong> to the beach or <strong>stay</strong> home?</li>
+            <li>Would you rather <strong>work</strong> today or <strong>rest</strong>?</li>
+          </ul>
+        </div>
+
+        <div class="subsec">
+          <h3>Correct vs. Incorrect</h3>
+          <div class="compare-grid">
+            <div class="compare-right">
+              <div class="compare-label">✅ Correct</div>
+              <p>I'd rather <span class="hl hl-g">go</span> home.</p>
+              <p>I'd rather walk <span class="hl hl-g">than</span> drive.</p>
+              <p>Would you rather walk <span class="hl hl-g">or</span> drive?</p>
+            </div>
+            <div class="compare-wrong">
+              <div class="compare-label">❌ Wrong</div>
+              <p>I'd rather <span class="hl hl-r">to go</span> home.</p>
+              <p>I'd rather <span class="hl hl-r">going</span> home.</p>
+              <p>Would you rather <span class="hl hl-r">to walk</span>?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="body-aside">
+        <div class="aside-tip at-warn">
+          <span class="aside-label">⚠️ THAN vs. OR</span>
+          <p><strong>THAN</strong> = statements<br><em>"I'd rather A than B."</em></p>
+          <p><strong>OR</strong> = questions<br><em>"Would you rather A or B?"</em></p>
+        </div>
+        <div class="aside-tip at-red">
+          <span class="aside-label">🚫 No TO, No -ING</span>
+          <p>After WOULD RATHER, always use the <strong>base verb</strong>.</p>
+          <p>❌ I'd rather <em>to eat</em>.<br>❌ I'd rather <em>eating</em>.<br>✅ I'd rather <strong>eat</strong>.</p>
+        </div>
+        <div class="aside-tip at-tip">
+          <span class="aside-label">💡 Meaning</span>
+          <p>WOULD RATHER = I choose this over that <em>right now</em>, in this moment.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 8. PREFER ─────────────────────────────────────────────────────────── -->
+  <div class="section-card" id="prefer">
+    <div class="section-header"><span class="sec-emoji">❤️</span><h2>PREFER</h2><span class="sec-num">Section 8</span></div>
+    <div class="section-body">
+      <div class="body-main">
+        <div class="warmup">
+          <div class="warmup-title">🎙️ Speaking Warm-Up — Answer Out Loud!</div>
+          <ol>
+            <li>Do you prefer rice or pasta for lunch?</li>
+            <li>Do you prefer day shifts or night shifts?</li>
+            <li>Do you prefer to study at home or in a class?</li>
+            <li>Do you prefer hot weather or cold weather?</li>
+            <li>Do you prefer tea or water when you have a stomach ache?</li>
+          </ol>
+        </div>
+
+        <div class="subsec">
+          <h3>Key Patterns — Learn These!</h3>
+
+          <p style="margin-bottom:6px;font-weight:600;">Pattern 1 — Noun</p>
+          <div class="formula">
+            <span class="fpart fp-subj">Subject</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-would">PREFER</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-noun">NOUN</span>
+          </div>
+          <p style="margin:6px 0 14px;font-size:.93rem;">I prefer <strong>coffee</strong>. &nbsp;/&nbsp; She prefers <strong>the day shift</strong>.</p>
+
+          <p style="margin-bottom:6px;font-weight:600;">Pattern 2 — Noun <span class="hl hl-o">to</span> Noun <em>(comparison)</em></p>
+          <div class="formula">
+            <span class="fpart fp-would">PREFER</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-noun">NOUN</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-to">to</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-noun">NOUN</span>
+          </div>
+          <p style="margin:6px 0 14px;font-size:.93rem;">I prefer coffee <span class="hl hl-o">to</span> tea. &nbsp;/&nbsp; She prefers water <span class="hl hl-o">to</span> soda.</p>
+
+          <p style="margin-bottom:6px;font-weight:600;">Pattern 3 — <span class="hl hl-o">-ing</span> verb</p>
+          <div class="formula">
+            <span class="fpart fp-would">PREFER</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-ing">VERB + -ing</span>
+          </div>
+          <p style="margin:6px 0 14px;font-size:.93rem;">I prefer <strong>working</strong> mornings. &nbsp;/&nbsp; He prefers <strong>eating</strong> light meals.</p>
+
+          <p style="margin-bottom:6px;font-weight:600;">Pattern 4 — <span class="hl hl-o">to</span> + base verb</p>
+          <div class="formula">
+            <span class="fpart fp-would">PREFER</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-to">to</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-verb">BASE VERB</span>
+          </div>
+          <p style="margin:6px 0 14px;font-size:.93rem;">I prefer <strong>to work</strong> mornings. &nbsp;/&nbsp; She prefers <strong>to eat</strong> early.</p>
+        </div>
+
+        <div class="subsec">
+          <h3>PREFER vs. WOULD RATHER</h3>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>PREFER — general habit</th><th>WOULD RATHER — this moment</th></tr></thead>
+              <tbody>
+                <tr><td>I prefer coffee. <em>(always)</em></td><td>I'd rather drink tea right now.</td></tr>
+                <tr><td>She prefers mornings. <em>(in general)</em></td><td>She'd rather work tonight. <em>(today)</em></td></tr>
+                <tr><td>We prefer light meals.</td><td>We'd rather eat something quick today.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="body-aside">
+        <div class="aside-tip at-warn">
+          <span class="aside-label">⚠️ Common Error #1</span>
+          <p>When comparing two nouns, use <span class="hl hl-o">to</span> — NOT "than"!</p>
+          <p>✅ I prefer coffee <strong>to</strong> tea.<br>❌ I prefer coffee <em>than</em> tea.</p>
+        </div>
+        <div class="aside-tip at-warn">
+          <span class="aside-label">⚠️ Common Error #2</span>
+          <p>When using a verb after prefer, you can use <span class="hl hl-o">-ing</span> or <span class="hl hl-o">to + base</span> — both are correct!</p>
+          <p>✅ I prefer <strong>working</strong> mornings.<br>✅ I prefer <strong>to work</strong> mornings.<br>❌ I prefer <em>work</em> mornings.</p>
+        </div>
+        <div class="aside-tip at-tip">
+          <span class="aside-label">💡 PREFER vs. RATHER</span>
+          <p><strong>Prefer</strong> = in general, always</p>
+          <p><strong>Would rather</strong> = right now, today</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 9. SECOND CONDITIONAL ────────────────────────────────────────────── -->
+  <div class="section-card" id="second-cond">
+    <div class="section-header"><span class="sec-emoji">🌟</span><h2>Second Conditional — "What If…"</h2><span class="sec-num">Section 9</span></div>
+    <div class="section-body">
+      <div class="body-main">
+        <div class="warmup">
+          <div class="warmup-title">🎙️ Speaking Warm-Up — Answer Out Loud!</div>
+          <ol>
+            <li>What would you do if you had one completely free day?</li>
+            <li>What would you do if you felt very sick at work?</li>
+            <li>If you had more money, what would you buy first?</li>
+            <li>If you spoke English very well, what kind of job would you like?</li>
+            <li>If you had a bad stomachache at work, what would you do first?</li>
+          </ol>
+        </div>
+
+        <div class="subsec">
+          <h3>The Formula</h3>
+          <div class="formula">
+            <span class="fpart fp-if">IF</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-past">PAST SIMPLE</span>
+            <span class="fpart fp-comma">,</span>
+            <span class="fpart fp-would">WOULD</span>
+            <span class="fpart fp-plus">+</span>
+            <span class="fpart fp-verb">BASE VERB</span>
+          </div>
+          <div class="tbl-wrap" style="margin-top:14px;">
+            <table>
+              <thead><tr><th>IF clause (imaginary)</th><th>WOULD clause (result)</th></tr></thead>
+              <tbody>
+                <tr><td>If I <strong>had</strong> more time,</td><td>I <strong>would study</strong> more.</td></tr>
+                <tr><td>If she <strong>lived</strong> closer,</td><td>she <strong>would arrive</strong> earlier.</td></tr>
+                <tr><td>If I <strong>felt</strong> sick,</td><td>I <strong>would go</strong> home.</td></tr>
+                <tr><td>If we <strong>had</strong> a bigger break,</td><td>we <strong>would eat</strong> a real lunch.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin-top:10px;font-size:.93rem;"><em>You can also flip the order — same meaning:</em><br>
+          I would study more <strong>if</strong> I had more time.</p>
+        </div>
+
+        <div class="subsec">
+          <h3>Work &amp; Health Examples</h3>
+          <ul>
+            <li>If I had a different schedule, I would <strong>sleep</strong> much better.</li>
+            <li>If my coworker had too many boxes, I would <strong>help</strong> them.</li>
+            <li>If I had a stomachache, I would <strong>tell</strong> my supervisor.</li>
+            <li>If I felt dizzy, I would <strong>sit down</strong> and ask for help.</li>
+            <li>If someone needed help, I would <strong>call</strong> 911 immediately.</li>
+          </ul>
+        </div>
+
+        <div class="subsec">
+          <h3>English &amp; Life Examples</h3>
+          <ul>
+            <li>If I spoke English very well, I would <strong>apply</strong> for a better job.</li>
+            <li>If I had more confidence, I would <strong>speak</strong> more in class.</li>
+            <li>If I had more money, I would <strong>travel</strong> to another country.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="body-aside">
+        <div class="aside-tip at-tip">
+          <span class="aside-label">💡 Why Past Tense?</span>
+          <p>The past verb in the IF clause does <strong>NOT</strong> mean past time.</p>
+          <p>It shows the situation is <strong>not real right now</strong> — it's imaginary.</p>
+          <p>"If I <em>had</em> money…" = I don't have it now. Just imagining!</p>
+        </div>
+        <div class="aside-tip at-red">
+          <span class="aside-label">🚫 Never use WILL</span>
+          <p>❌ If I had money, I <em>will</em> travel.<br>✅ If I had money, I <strong>would</strong> travel.</p>
+        </div>
+        <div class="aside-tip at-warn">
+          <span class="aside-label">⚠️ Watch Out</span>
+          <p>❌ If I <em>would have</em> time, I go.<br>✅ If I <strong>had</strong> time, I <strong>would go</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 10. PATTERN SUMMARY ───────────────────────────────────────────────── -->
+  <div class="section-card" id="summary">
+    <div class="section-header"><span class="sec-emoji">📋</span><h2>Quick Pattern Summary</h2><span class="sec-num">Section 10</span></div>
+    <div class="section-body full"><div class="body-main">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Expression</th><th>Pattern</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><strong>WOULD</strong></td><td>would + <span class="hl hl-g">BASE VERB</span></td><td>I would help.</td></tr>
+            <tr><td><strong>WOULD LIKE</strong></td><td>would like + <span class="hl hl-o">TO</span> + <span class="hl hl-g">BASE VERB</span></td><td>I would like to help.</td></tr>
+            <tr><td><strong>WOULD RATHER</strong></td><td>would rather + <span class="hl hl-g">BASE VERB</span></td><td>I'd rather stay home.</td></tr>
+            <tr><td><strong>WOULD RATHER…THAN</strong></td><td>would rather + <span class="hl hl-g">BASE</span> + <span class="hl hl-p">than</span> + <span class="hl hl-g">BASE</span></td><td>I'd rather walk than drive.</td></tr>
+            <tr><td><strong>PREFER + noun</strong></td><td>prefer + <span class="hl hl-b">NOUN</span></td><td>I prefer coffee.</td></tr>
+            <tr><td><strong>PREFER + noun to noun</strong></td><td>prefer + <span class="hl hl-b">NOUN</span> + <span class="hl hl-o">to</span> + <span class="hl hl-b">NOUN</span></td><td>I prefer coffee to tea.</td></tr>
+            <tr><td><strong>PREFER + verb</strong></td><td>prefer + <span class="hl hl-o">-ing</span> &nbsp;or&nbsp; prefer + <span class="hl hl-o">to</span> + <span class="hl hl-g">BASE</span></td><td>I prefer resting. / I prefer to rest.</td></tr>
+            <tr><td><strong>SECOND CONDITIONAL</strong></td><td><span class="hl hl-b">IF</span> + <span class="hl hl-r">PAST</span>, would + <span class="hl hl-g">BASE VERB</span></td><td>If I had time, I'd study more.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ─── 11. COMMON MISTAKES ───────────────────────────────────────────────── -->
+  <div class="section-card" id="mistakes">
+    <div class="section-header"><span class="sec-emoji">🚫</span><h2>Common Mistakes</h2><span class="sec-num">Section 11</span></div>
+    <div class="section-body full"><div class="body-main">
+      <p>Watch out for these — they are the most frequent errors.</p>
+      <div class="tbl-wrap" style="margin-top:14px;">
+        <table>
+          <thead><tr><th>❌ Wrong</th><th>✅ Correct</th><th>Rule</th></tr></thead>
+          <tbody>
+            <tr><td>I would <em>to</em> study.</td><td>I would study.</td><td>WOULD + base verb (no TO)</td></tr>
+            <tr><td>I would like <em>study</em>.</td><td>I would like <strong>to</strong> study.</td><td>WOULD LIKE + TO + base verb</td></tr>
+            <tr><td>I would rather <em>to go</em>.</td><td>I would rather go.</td><td>WOULD RATHER + base verb (no TO)</td></tr>
+            <tr><td>I would rather <em>going</em>.</td><td>I would rather go.</td><td>No -ING after WOULD RATHER</td></tr>
+            <tr><td>What would you like <em>eating</em>?</td><td>What would you like <strong>to eat</strong>?</td><td>WOULD LIKE + TO + base verb</td></tr>
+            <tr><td>If I had money, I <em>will</em> travel.</td><td>If I had money, I <strong>would</strong> travel.</td><td>Second conditional = WOULD, not WILL</td></tr>
+            <tr><td>If I <em>would have</em> time, I go.</td><td>If I <strong>had</strong> time, I <strong>would go</strong>.</td><td>IF clause = past simple</td></tr>
+            <tr><td>I prefer coffee <em>than</em> tea.</td><td>I prefer coffee <strong>to</strong> tea.</td><td>PREFER + noun + TO + noun</td></tr>
+            <tr><td>I prefer <em>work</em> mornings.</td><td>I prefer <strong>working</strong> / <strong>to work</strong>.</td><td>PREFER + -ing or TO + base verb</td></tr>
+            <tr><td>She would rather <em>to rest</em>.</td><td>She would rather rest.</td><td>No TO after WOULD RATHER</td></tr>
+            <tr><td>I would like <em>rest</em> now.</td><td>I would like <strong>to rest</strong> now.</td><td>WOULD LIKE + TO + base verb</td></tr>
+            <tr><td>Would you rather <em>going</em>?</td><td>Would you rather <strong>go</strong>?</td><td>Base verb after WOULD RATHER</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ─── 12. SPEAKING PRACTICE ─────────────────────────────────────────────── -->
+  <div class="section-card" id="speaking">
+    <div class="section-header"><span class="sec-emoji">🗣️</span><h2>Speaking Practice</h2><span class="sec-num">Section 12</span></div>
+    <div class="section-body full"><div class="body-main">
+      <p>Answer each question out loud. Use full sentences and add one extra detail.</p>
+      <div class="speaking-group" style="margin-top:18px;">
+        <h4>A — Questions with WOULD</h4>
+        <ol>
+          <li>What would you do if you finished work two hours early today?</li>
+          <li>Would you take a different job if someone offered you one? Why?</li>
+          <li>What would you eat for dinner if you could choose anything?</li>
+          <li>Would you call a doctor if you had chest pain at work?</li>
+          <li>Would you ask your coworker for help if you had too many boxes?</li>
+          <li>What would you do if you had no phone for one full day?</li>
+        </ol>
+      </div>
+      <div class="speaking-group">
+        <h4>B — Would You Rather Questions</h4>
+        <ol>
+          <li>Would you rather work the morning shift or the night shift?</li>
+          <li>Would you rather eat a big lunch or a small snack at work?</li>
+          <li>Would you rather take the bus or drive to work?</li>
+          <li>Would you rather have Friday off or Monday off?</li>
+          <li>Would you rather rest at home or exercise after work?</li>
+          <li>Would you rather drink water or a sports drink when very tired?</li>
+          <li>Would you rather talk to a doctor in English or in Spanish?</li>
+          <li>Would you rather have more money or more free time?</li>
+        </ol>
+      </div>
+      <div class="speaking-group">
+        <h4>C — PREFER Questions</h4>
+        <ol>
+          <li>Do you prefer to work alone or with a team?</li>
+          <li>Do you prefer rice or bread with your meals?</li>
+          <li>Do you prefer studying in the morning or at night?</li>
+          <li>Do you prefer hot drinks or cold drinks when you're sick?</li>
+          <li>Do you prefer a short break during the shift or a long one at the end?</li>
+          <li>Do you prefer to communicate by phone call or by text?</li>
+        </ol>
+      </div>
+      <div class="speaking-group">
+        <h4>D — Second Conditional</h4>
+        <ol>
+          <li>If you had three days off, where would you go?</li>
+          <li>If you spoke perfect English, what would change in your life?</li>
+          <li>If you had a bad headache at work, what would you do?</li>
+          <li>If you could change one thing about your work schedule, what would it be?</li>
+          <li>If a coworker had a medical emergency, what would you do?</li>
+          <li>If you had more money, what would be the first thing you'd buy?</li>
+          <li>If you had more confidence in English, what would you do differently?</li>
+        </ol>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ─── 13. ERROR IDENTIFICATION ─────────────────────────────────────────── -->
+  <div class="section-card" id="errors">
+    <div class="section-header"><span class="sec-emoji">✏️</span><h2>Error Identification Practice</h2><span class="sec-num">Section 13</span></div>
+    <div class="section-body full"><div class="body-main">
+      <p>Find the mistake in each sentence and write the correct version.</p>
+      <ul class="error-list" style="margin-top:14px;">
+        <li>I would like eat a sandwich after class.</li>
+        <li>She would rather to stay home tonight.</li>
+        <li>If I had more money, I will buy a car.</li>
+        <li>Would you rather going by train or by bus?</li>
+        <li>He would to help if he had more time.</li>
+        <li>They would like go to the doctor tomorrow.</li>
+        <li>I prefer coffee than tea.</li>
+        <li>Would you rather to work mornings or nights?</li>
+        <li>If I would feel sick, I go home.</li>
+        <li>She would rather resting than working.</li>
+        <li>I would to call you, but I didn't have your number.</li>
+        <li>What would you like doing this weekend?</li>
+        <li>If I spoke English well, I will apply for that job.</li>
+        <li>He prefers working alone that working with others.</li>
+        <li>I would rather to drink tea than coffee.</li>
+      </ul>
+    </div></div>
+  </div>
+
+  <!-- ─── 14. ANSWER BETTER ─────────────────────────────────────────────────── -->
+  <div class="section-card" id="better">
+    <div class="section-header"><span class="sec-emoji">💪</span><h2>How to Answer Better</h2><span class="sec-num">Section 14</span></div>
+    <div class="section-body full"><div class="body-main">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Strategy</th><th>Simple Answer</th><th>Better Answer</th></tr></thead>
+          <tbody>
+            <tr><td>Answer in full sentences</td><td>"Coffee."</td><td>"I would like to drink coffee."</td></tr>
+            <tr><td>Add a reason with <strong>because</strong></td><td>"I'd rather rest."</td><td>"I'd rather rest because I'm very tired."</td></tr>
+            <tr><td>Add one extra detail</td><td>"I would go home."</td><td>"I would go home and sleep for a few hours."</td></tr>
+            <tr><td>Compare two ideas</td><td>"I prefer mornings."</td><td>"I prefer mornings to nights because I sleep better."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="box box-tip" style="margin-top:14px;">
+        <span class="box-label">💡 Remember</span>
+        <p>Even one extra word makes your answer sound more natural!</p>
+        <p>"Yes." → "Yes, I would." → "Yes, I would, because I like helping people."</p>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ─── 15. HOMEWORK ──────────────────────────────────────────────────────── -->
+  <div class="section-card" id="homework">
+    <div class="section-header"><span class="sec-emoji">📚</span><h2>Homework</h2><span class="sec-num">Section 15</span></div>
+    <div class="section-body full"><div class="body-main">
+      <div class="subsec">
+        <h3>A. Writing Task</h3>
+        <p>Write <strong>8–12 sentences</strong> about yourself. Use <em>would, would rather, prefer,</em> and the <em>second conditional</em>.</p>
+        <div class="box box-blue" style="margin-top:10px;">
+          <span class="box-label">📝 Your Topic</span>
+          <p>Write about what you would like to improve in your life, what you would rather change in your daily routine, what you prefer at work or in your study habits, and what you would do if you had more time, money, or confidence in English. Try to use each expression at least once.</p>
+        </div>
+      </div>
+      <div class="subsec">
+        <h3>B. Written Questions</h3>
+        <ol>
+          <li>What would you do if you had a free week with no work?</li>
+          <li>Would you like to change anything about your current job? What?</li>
+          <li>Do you prefer to study alone or with someone? Why?</li>
+          <li>Would you rather live in a big city or a small town? Why?</li>
+          <li>What would you do if you felt sick at work and couldn't leave?</li>
+          <li>Do you prefer hot food or cold food? Give an example.</li>
+          <li>If you had more free time, what would you learn or do?</li>
+          <li>What would you like to improve about your English? Why?</li>
+          <li>Would you rather have a short break every hour or one long break? Why?</li>
+          <li>If you could speak to a doctor in English, what would you say first?</li>
+        </ol>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ─── 16. ANSWER KEY ────────────────────────────────────────────────────── -->
+  <div class="section-card" id="answer-key">
+    <div class="section-header"><span class="sec-emoji">✔️</span><h2>Answer Key — Error Identification</h2><span class="sec-num">Section 16</span></div>
+    <div class="section-body full"><div class="body-main">
+      <ul class="ans-list">
+        <li>I would like <strong>to eat</strong> a sandwich after class.</li>
+        <li>She would rather <strong>stay</strong> home tonight.</li>
+        <li>If I had more money, I <strong>would</strong> buy a car.</li>
+        <li>Would you rather <strong>go</strong> by train or by bus?</li>
+        <li>He would <strong>help</strong> if he had more time. <em>(remove "to")</em></li>
+        <li>They would like <strong>to go</strong> to the doctor tomorrow.</li>
+        <li>I prefer coffee <strong>to</strong> tea.</li>
+        <li>Would you rather <strong>work</strong> mornings or nights?</li>
+        <li>If I <strong>felt</strong> sick, I <strong>would go</strong> home.</li>
+        <li>She would rather <strong>rest</strong> than work.</li>
+        <li>I would <strong>call</strong> you… <em>(remove "to")</em></li>
+        <li>What would you like <strong>to do</strong> this weekend?</li>
+        <li>If I spoke English well, I <strong>would</strong> apply for that job.</li>
+        <li>He prefers working alone <strong>to</strong> working with others.</li>
+        <li>I would rather <strong>drink</strong> tea than coffee.</li>
+      </ul>
+    </div></div>
+  </div>
+
+  <div id="footer">
+    <p>Keep practicing — every sentence counts! 🌟</p>
+    <p style="margin-top:6px;"><strong>Your English Buddy</strong> &nbsp;|&nbsp; Basic–Intermediate &nbsp;|&nbsp; 🎓</p>
+  </div>
+
+</main>
+
+<script>
+  const sections = document.querySelectorAll('.section-card');
+  const navLinks = document.querySelectorAll('#nav-list a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => {
+          l.classList.remove('active');
+          if (l.getAttribute('href') === '#' + e.target.id) l.classList.add('active');
+        });
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => observer.observe(s));
+  navLinks.forEach(l => l.addEventListener('click', () => {
+    document.getElementById('sidebar').classList.remove('open');
+  }));
+</script>
+</body>
+</html>
